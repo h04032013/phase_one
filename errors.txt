@@ -1,0 +1,16 @@
+The `seen_tokens` attribute is deprecated and will be removed in v4.41. Use the `cache_position` model input instead.
+Traceback (most recent call last):
+  File "/Users/haylindiaz/Projects/Phase_One_Testing/phase_one_gen.py", line 55, in <module>
+    responses = answer_questions(
+  File "/Users/haylindiaz/Projects/Phase_One_Testing/phase_one_gen.py", line 13, in answer_questions
+    outputs = model.generate(**inputs, max_new_tokens=2000)
+  File "/opt/anaconda3/envs/genv/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/opt/anaconda3/envs/genv/lib/python3.10/site-packages/transformers/generation/utils.py", line 2223, in generate
+    result = self._sample(
+  File "/opt/anaconda3/envs/genv/lib/python3.10/site-packages/transformers/generation/utils.py", line 3204, in _sample
+    model_inputs = self.prepare_inputs_for_generation(input_ids, **model_kwargs)
+  File "/Users/haylindiaz/.cache/huggingface/modules/transformers_modules/microsoft/Phi-3-mini-4k-instruct/0a67737cc96d2554230f90338b163bc6380a2a85/modeling_phi3.py", line 1292, in prepare_inputs_for_generation
+    max_cache_length = past_key_values.get_max_length()
+  File "/opt/anaconda3/envs/genv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1931, in __getattr__
+    raise AttributeError
