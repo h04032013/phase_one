@@ -27,9 +27,9 @@ def answer_questions(math_questions, batch_size, num_questions, model, tokenizer
 
 
 if __name__ == '__main__':
-
     #Trying to keep it model agnostic 
-    model_name = "microsoft/Phi-3.5-mini-instruct"
+    #microsoft/Phi-3.5-mini-instruct
+    model_name = "meta-llama/Llama-3.2-3B-Instruct"
     base_model = AutoModelForCausalLM.from_pretrained(model_name,cache_dir="/Users/haylindiaz/Projects/Phase_One_Testing", trust_remote_code=True )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
