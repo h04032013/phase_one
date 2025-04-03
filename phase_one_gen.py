@@ -11,7 +11,8 @@ def answer_questions(math_questions, batch_size, num_questions, model, tokenizer
         
         inputs = tokenizer(batch_inputs, padding=True, truncation=True, return_tensors="pt")
         inputs = inputs.to(model.device)
-        outputs = model.generate(**inputs, max_new_tokens=2000)
+        print("starting to generate", i)
+        outputs = model.generate(**inputs, max_new_tokens=1000)
 
         # Decode and store responses
         decoded_responses = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
@@ -20,7 +21,7 @@ def answer_questions(math_questions, batch_size, num_questions, model, tokenizer
             responses.append({
                 "unique_id": item["unique_id"],
                 "problem": item["problem"],
-                "response": response
+                "response": response,
             })
         
     return responses
@@ -29,7 +30,9 @@ def answer_questions(math_questions, batch_size, num_questions, model, tokenizer
 if __name__ == '__main__':
     #Trying to keep it model agnostic 
     #microsoft/Phi-3.5-mini-instruct
-    model_name = "meta-llama/Llama-3.2-3B-Instruct"
+    #meta-llama/Llama-3.2-1B-Instruct
+    #model_name = "Qwen/Qwen2.5-0.5B"
+    model_name = "microsoft/Phi-3.5-mini-instruct"
     base_model = AutoModelForCausalLM.from_pretrained(model_name,cache_dir="/Users/haylindiaz/Projects/Phase_One_Testing", trust_remote_code=True )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -52,7 +55,7 @@ if __name__ == '__main__':
     math_questions = [{"unique_id": item["unique_id"], "problem": item["problem"]} for item in data]
 
     # Batch processing setup
-    batch_size = 1  # Adjust based on VRAM
+    batch_size = 8  # Adjust based on VRAM
     num_questions = len(math_questions)
 
     responses = answer_questions(
