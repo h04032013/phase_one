@@ -4,20 +4,24 @@ import torch
 from tqdm import tqdm
 
 # Settings
-model_name = "Qwen/Qwen2.5-0.5B"
+#microsoft/Phi-4-mini-instruct
+#Qwen/Qwen2.5-0.5B
+model_name = "microsoft/Phi-4-mini-instruct"
 input_path = "/Users/haylindiaz/Projects/Phase_One_Testing/MATH_test_short.json"
 cache_str = "/Users/haylindiaz/Projects/Phase_One_Testing"
 output_path = "/Users/haylindiaz/Projects/Phase_One_Testing/phase_one_responses.json"
-batch_size = 8  # Adjust based on your GPU memory
+batch_size = 1  # Adjust based on your GPU memory
 
 # Load tokenizer and model
-tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_str, padding_side='left',trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_str,trust_remote_code=True)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
-model.eval()
 
+base_model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_str,trust_remote_code=True)
+base_model.to(device)
+base_model.eval()
+
+tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_str, padding_side='left',trust_remote_code=True)
 # Load input questions
+
 with open(input_path, "r") as f:
     problems = json.load(f)
 
@@ -37,11 +41,9 @@ for i in tqdm(range(0, len(problems), batch_size)):
     # Tokenize batch
     inputs = tokenizer(prompts, padding=True, return_tensors="pt").to(device)
 
-
-    print("generating for ", i)
     # Generate responses
     with torch.no_grad():
-        outputs = model.generate(
+        outputs = base_model.generate(
             **inputs,
             max_new_tokens=1000,
             do_sample=False

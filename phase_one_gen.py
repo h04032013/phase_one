@@ -32,7 +32,7 @@ if __name__ == '__main__':
     #microsoft/Phi-3.5-mini-instruct
     #meta-llama/Llama-3.2-1B-Instruct
     #model_name = "Qwen/Qwen2.5-0.5B"
-    model_name = "microsoft/Phi-3.5-mini-instruct"
+    model_name = "Qwen/Qwen2.5-0.5B""
     base_model = AutoModelForCausalLM.from_pretrained(model_name,cache_dir="/Users/haylindiaz/Projects/Phase_One_Testing", trust_remote_code=True )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
