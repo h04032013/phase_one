@@ -32,7 +32,7 @@ results = []
 # Batch processing
 for i in tqdm(range(0, len(problems), batch_size)):
     batch = problems[i:i+batch_size]
-    prompts = [prompt_template.format(entry["problem"]) for entry in batch]
+    prompts = [prompt_template.format(entry["problem"], ) for entry in batch]
 
     # Tokenize batch
     inputs = tokenizer(prompts, padding=True, return_tensors="pt").to(device)
@@ -60,6 +60,7 @@ for i in tqdm(range(0, len(problems), batch_size)):
                 break
 
         results.append({
+            "unique_id":  batch[j]["unique_id"],
             "question": batch[j]["problem"],
             "response": response_text,
             "final_answer": final_answer
